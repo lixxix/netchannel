@@ -2,7 +2,6 @@ package pipe
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"time"
@@ -28,7 +27,7 @@ type PipeWS struct {
 // 入口流量
 func (p *PipeWS) StreamIn() {
 	defer func() {
-		log.Println("StreamIn closed")
+		// log.Println("StreamIn closed")
 		close(p.inbuf)
 	}()
 
@@ -50,7 +49,7 @@ func (p *PipeWS) StreamIn() {
 func (p *PipeWS) StreamBack() {
 
 	defer func() {
-		log.Println("StreamBack closed")
+		// log.Println("StreamBack closed")
 		close(p.backbuf)
 	}()
 
@@ -60,7 +59,7 @@ func (p *PipeWS) StreamBack() {
 		sz, err := p.target.Read(buff)
 		if err != nil {
 			// 问题直接结束
-			fmt.Println(err.Error(), "Streamback")
+			// fmt.Println(err.Error(), "Streamback")
 			return
 		}
 		copy_buf := make([]byte, sz)
@@ -71,7 +70,7 @@ func (p *PipeWS) StreamBack() {
 
 func (p *PipeWS) Working() {
 	defer func() {
-		log.Println("Stop working")
+		// log.Println("Stop working")
 		p.target.Close()
 		p.origin.Close()
 	}()
@@ -82,14 +81,14 @@ func (p *PipeWS) Working() {
 		select {
 		case buf, ok := <-p.inbuf:
 			if ok {
-				log.Println("传递", string(buf))
+				// log.Println("传递", string(buf))
 				p.target.Write(buf)
 			} else {
 				return
 			}
 		case buf, ok := <-p.backbuf:
 			if ok {
-				log.Println("返回", string(buf))
+				// log.Println("返回", string(buf))
 				p.origin.SetWriteDeadline(time.Now().Add(time.Second))
 				p.origin.WriteMessage(websocket.BinaryMessage, buf)
 			} else {

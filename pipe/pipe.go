@@ -2,7 +2,6 @@ package pipe
 
 import (
 	"fmt"
-	"log"
 	"net"
 )
 
@@ -20,7 +19,7 @@ type Pipe struct {
 // 入口流量
 func (p *Pipe) StreamIn() {
 	defer func() {
-		log.Println("StreamIn closed")
+		// log.Println("StreamIn closed")
 		close(p.inbuf)
 	}()
 
@@ -44,7 +43,7 @@ func (p *Pipe) StreamIn() {
 func (p *Pipe) StreamBack() {
 
 	defer func() {
-		log.Println("StreamBack closed")
+		// log.Println("StreamBack closed")
 		close(p.backbuf)
 	}()
 
@@ -65,7 +64,7 @@ func (p *Pipe) StreamBack() {
 
 func (p *Pipe) Working() {
 	defer func() {
-		log.Println("Stop working")
+		// log.Println("Stop working")
 		p.target.Close()
 		p.origin.Close()
 	}()
