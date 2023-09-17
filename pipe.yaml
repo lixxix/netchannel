@@ -1,0 +1,3 @@
+listen: 8888
+type: ws
+target: 127.0.0.1:6677
